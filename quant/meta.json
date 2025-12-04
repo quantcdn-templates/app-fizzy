@@ -1,0 +1,22 @@
+[
+    {
+        "title": "Fizzy",
+        "url": "/deploy/step-one?template=app-fizzy",
+        "summary": "Modern no-frills Kanban board application.",
+        "content": "Fizzy is a lightweight, fast Kanban board built with Ruby on Rails. Features real-time updates, drag-and-drop task management, and a clean minimal interface.",
+        "image": "https://raw.githubusercontent.com/quantcdn-templates/app-fizzy/main/quant/screenshot.png",
+        "categories": [
+            "ruby",
+            "rails",
+            "kanban",
+            "productivity"
+        ],
+        "tags": [
+            "thruster",
+            "hotwire",
+            "turbo"
+        ],
+        "template_type": "app",
+        "requires_db": true
+    }
+]

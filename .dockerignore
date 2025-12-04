@@ -1,0 +1,48 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+LICENSE
+*.md
+
+# CI/CD
+.github/
+
+# Local development
+.ddev/
+docker-compose.override.yml
+docker-compose.override.yml.example
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Ruby/Rails development
+/log/*
+/tmp/*
+/storage/*
+/coverage/
+/.bundle/
+/vendor/bundle
+
+# Test files
+/spec/
+/test/
+
+# Node
+/node_modules/
+
+# Environment files (handled by runtime)
+.env
+.env.*
+
+# macOS
+.DS_Store
+
+# Quant template metadata
+/quant/
+

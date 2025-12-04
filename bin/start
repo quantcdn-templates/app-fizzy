@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+# Start Solid Queue worker in background if RUN_WORKER is set
+if [ "${RUN_WORKER:-false}" = "true" ]; then
+  echo "Starting Solid Queue worker..."
+  bundle exec rake solid_queue:start &
+  WORKER_PID=$!
+  trap "kill $WORKER_PID 2>/dev/null" EXIT
+fi
+
+# Start web server
+exec ./bin/thrust ./bin/rails server

@@ -1,0 +1,21 @@
+# Local Development Override
+#
+# Copy to docker-compose.override.yml:
+#   cp docker-compose.override.yml.example docker-compose.override.yml
+#   docker-compose up -d --build
+
+services:
+  fizzy:
+    build: .
+    environment:
+      RAILS_ENV: development
+      RAILS_LOG_TO_STDOUT: "true"
+      # Base domain - no subdomain prefix
+      APP_HOST: localhost:3000
+      # MailHog SMTP
+      SMTP_ADDRESS: mailhog
+      SMTP_PORT: 1025
+      SMTP_DOMAIN: localhost
+      SMTP_ENABLE_STARTTLS_AUTO: "false"
+      # Run Solid Queue in-process
+      RUN_WORKER: "true"

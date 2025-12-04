@@ -1,0 +1,69 @@
+services:
+  fizzy:
+    image: ghcr.io/quantcdn-templates/app-fizzy:latest
+    build: .
+    platform: linux/amd64
+    environment:
+      RAILS_ENV: ${RAILS_ENV:-production}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      # Application hostname (e.g., "fizzy.yourdomain.com" or "localhost:3000")
+      APP_HOST: ${APP_HOST}
+      RAILS_FORCE_SSL: ${RAILS_FORCE_SSL:-false}
+      # Database configuration
+      DB_HOST: ${DB_HOST:-db}
+      DB_DATABASE: ${DB_DATABASE:-fizzy}
+      DB_USERNAME: ${DB_USERNAME:-fizzy}
+      DB_PASSWORD: ${DB_PASSWORD:-fizzy}
+      # SMTP configuration for magic link emails
+      SMTP_ADDRESS: ${SMTP_ADDRESS}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_DOMAIN: ${SMTP_DOMAIN}
+      SMTP_USER_NAME: ${SMTP_USER_NAME}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_AUTHENTICATION: ${SMTP_AUTHENTICATION:-plain}
+      SMTP_ENABLE_STARTTLS_AUTO: ${SMTP_ENABLE_STARTTLS_AUTO:-true}
+      # Set to "true" to run Solid Queue worker in same container
+      RUN_WORKER: ${RUN_WORKER:-false}
+    ports:
+      - "3000:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/up"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  db:
+    image: mysql:8.0
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_DATABASE:-fizzy}
+      MYSQL_USER: ${DB_USERNAME:-fizzy}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-fizzy}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # Local development email testing (not deployed to production)
+  mailhog:
+    image: mailhog/mailhog:latest
+    platform: linux/amd64
+    profiles:
+      - development
+    labels:
+      quant.type: none
+    ports:
+      - "8025:8025"  # Web UI
+      - "1025:1025"  # SMTP server
+
+volumes:
+  db_data:
