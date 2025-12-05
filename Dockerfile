@@ -1,5 +1,7 @@
 FROM ghcr.io/basecamp/fizzy:main
 
+USER root
+
 # Copy custom initializers for containerized deployment
 COPY config/initializers/smtp.rb /rails/config/initializers/smtp.rb
 COPY config/initializers/url_options.rb /rails/config/initializers/url_options.rb
