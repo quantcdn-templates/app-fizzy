@@ -3,6 +3,7 @@ FROM ghcr.io/basecamp/fizzy:main
 USER root
 
 # Copy custom config for containerized deployment
+COPY config/database.yml /rails/config/database.yml
 COPY config/initializers/smtp.rb /rails/config/initializers/smtp.rb
 COPY config/initializers/url_options.rb /rails/config/initializers/url_options.rb
 COPY --chmod=755 bin/start /rails/bin/start

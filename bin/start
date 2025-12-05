@@ -1,14 +1,6 @@
 #!/bin/bash
 set -e
 
-# Map Quant Cloud DB_* vars to Fizzy's MYSQL_* vars
-export DATABASE_ADAPTER="${DB_ENGINE:-mysql}"
-export MYSQL_HOST="${DB_HOST:-}"
-export MYSQL_PORT="${DB_PORT:-3306}"
-export MYSQL_USER="${DB_USERNAME:-}"
-export MYSQL_PASSWORD="${DB_PASSWORD:-}"
-export MYSQL_DATABASE="${DB_DATABASE:-}"
-
 # Prepare database (create if missing, run pending migrations)
 echo "Preparing database..."
 MIGRATE=1 ./bin/rails db:prepare
