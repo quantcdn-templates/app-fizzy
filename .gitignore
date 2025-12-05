@@ -65,3 +65,4 @@ docker-compose.override.yml
 /config/master.key
 /config/credentials/*.key
 
+/fizzy
