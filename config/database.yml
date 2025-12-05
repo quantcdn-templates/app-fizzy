@@ -1,6 +1,10 @@
 # Custom database config for Quant Cloud RDS deployment
 # Adds SSL/TLS support required for MySQL 8.0 caching_sha2_password authentication
 
+<%
+  db_name = ENV.fetch("DB_DATABASE", "fizzy")
+%>
+
 default: &default
   adapter: trilogy
   host: <%= ENV.fetch("DB_HOST", "127.0.0.1") %>
@@ -9,40 +13,31 @@ default: &default
   password: <%= ENV["DB_PASSWORD"] %>
   pool: 50
   timeout: 5000
-  ssl_mode: required
+  ssl_mode: <%= ENV.fetch("RAILS_ENV", "development") == "production" ? "required" : "disabled" %>
 
 development:
   primary:
     <<: *default
-    database: fizzy_development
+    database: <%= db_name %>
   cable:
     <<: *default
-    database: fizzy_development_cable
-    migrations_paths: db/cable_migrate
-
-test:
-  primary:
-    <<: *default
-    database: fizzy_test
-  cable:
-    <<: *default
-    database: fizzy_test_cable
+    database: <%= db_name %>
     migrations_paths: db/cable_migrate
 
 production:
   primary:
     <<: *default
-    database: fizzy_production
+    database: <%= db_name %>
   cable:
     <<: *default
-    database: fizzy_production_cable
+    database: <%= db_name %>
     migrations_paths: db/cable_migrate
   queue:
     <<: *default
-    database: fizzy_production_queue
+    database: <%= db_name %>
     migrations_paths: db/queue_migrate
   cache:
     <<: *default
-    database: fizzy_production_cache
+    database: <%= db_name %>
     migrations_paths: db/cache_migrate
 
